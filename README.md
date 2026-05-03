@@ -14,9 +14,9 @@ AfaanOromoApp/
 │   │   ├── database.sqlite
 │   │   ├── schema.sql 
 │   │   ├── vocab.csv
-│   ├── sqlite_node_dependencies
+├──sqlite_node_dependencies
 │   │   ├── package-lock.json
 │   │   ├── package.json
-│   ├── git.ignore
-│   ├── README.md
+├── git.ignore
+└── README.md
 ```
