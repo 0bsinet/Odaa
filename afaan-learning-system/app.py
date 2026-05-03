@@ -36,10 +36,6 @@ def submit():
   user_answer = st.session_state.user_answer.strip()
 
   correct = check_answer(q['english'], user_answer)
-
-  st.session_state.feedback = (
-    "✅ Correct!" if correct else f"❌ Wrong. Correct answer: {q['english']}"
-  )
   
   st.session_state.correct = correct
 
@@ -57,14 +53,14 @@ def submit():
   conn.commit()
   conn.close()
 
+  st.session_state['current_question'] = get_random_question(df) # retrieve another random word
+
+  st.session_state.feedback = (
+    "✅ Correct!" if correct else f"❌ Wrong. Correct answer: {q['english']}"
+  )
+
   # Reset input 
   st.session_state['user_answer'] = ""
-
-def next_question():
-  st.session_state['current_question'] = get_random_question(df) # retrieve another random word
-  st.session_state.feedback = ""
-  st.session_state.correct = False
-  st.session_state.user_answer = ""
 
 # -----------------------
 # UI layout
@@ -77,21 +73,13 @@ user_answer = st.text_input(
   autocomplete="off"
 )
 
-col1, col2 = st.columns([3,1])
-
-with col1:
-  if not st.session_state.correct:
-    st.button("Submit", on_click=submit)
-
-with col2:
-  st.button("Next Question", on_click=next_question)
+st.button("Submit", on_click=submit)
 
 # -----------------------
 # Feedback display
 # -----------------------
 if st.session_state.feedback:
-    st.info(st.session_state.feedback)
-  
+  st.info(st.session_state.feedback)
 
 
 
