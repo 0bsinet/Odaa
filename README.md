@@ -3,7 +3,7 @@ An AI integrated adaptive teaching app for users interested in learning Afaan Or
 
 ## App Structure
 
-'''text
+```text
 AfaanOromoApp/
 ├──afaan-learning-system/
 │   ├── __init__.py
@@ -19,4 +19,4 @@ AfaanOromoApp/
 │   │   ├── package.json
 │   ├── git.ignore
 │   ├── README.md
-'''
+```
