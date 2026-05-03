@@ -8,5 +8,8 @@ def load_vocab():
 def get_random_question(df: pd.DataFrame) -> pd.Series:
   return df.sample(1).iloc[0]
 
+# Compare user answer with 
 def check_answer(correct_answer: str, user_answer: str) -> bool: 
-  return correct_answer.strip().lower() == user_answer.strip().lower()
+  correct_answer = "".join(correct_answer.split()).lower()
+  user_answer = "".join(user_answer.split()).lower()
+  return correct_answer == user_answer
