@@ -21,14 +21,10 @@ if "current_question" not in st.session_state:
 if "feedback" not in st.session_state:
   st.session_state.feedback = ""
 
+if "correct" not in st.session_state:
+  st.session_state.correct = False
+
 q = st.session_state.current_question
-
-# -----------------------
-# UI layout
-# -----------------------
-st.subheader(f"What is the meaning of: {q['oromo']}")
-
-user_answer = st.text_input("Your answer:", key="user_answer", autocomplete="off")
 
 # -----------------------
 # Submit logic
@@ -36,14 +32,17 @@ user_answer = st.text_input("Your answer:", key="user_answer", autocomplete="off
 
 # Check user answer after they press the submit button
 def submit():
-  answer = st.session_state.user_answer.strip()
-  
-  correct = check_answer(q['english'], answer)
+  q = st.session_state.current_question
+  user_answer = st.session_state.user_answer.strip()
+
+  correct = check_answer(q['english'], user_answer)
 
   st.session_state.feedback = (
-    st.write("✅ Correct!" if correct else f"❌ Wrong. Correct answer: {q['english']}")
+    "✅ Correct!" if correct else f"❌ Wrong. Correct answer: {q['english']}"
   )
   
+  st.session_state.correct = correct
+
   # Write user performance to database.sqlite
   # Records answer and whether or not answer was correct
 
@@ -62,8 +61,40 @@ def submit():
   st.session_state['user_answer'] = ""
 
 def next_question():
-  st.session_state['current_question'] = get_random_question(df)
+  st.session_state['current_question'] = get_random_question(df) # retrieve another random word
   st.session_state.feedback = ""
+  st.session_state.correct = False
+  st.session_state.user_answer = ""
 
-st.button("Submit",on_click=submit)
-st.button("Next Question", on_click=next_question)
+# -----------------------
+# UI layout
+# -----------------------
+st.subheader(f"What is the meaning of: {q['oromo']}")
+
+user_answer = st.text_input(
+  "Your answer:", 
+  key="user_answer", 
+  autocomplete="off"
+)
+
+col1, col2 = st.columns([3,1])
+
+with col1:
+  if not st.session_state.correct:
+    st.button("Submit", on_click=submit)
+
+with col2:
+  st.button("Next Question", on_click=next_question)
+
+# -----------------------
+# Feedback display
+# -----------------------
+if st.session_state.feedback:
+    st.info(st.session_state.feedback)
+  
+
+
+
+
+
+
