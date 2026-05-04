@@ -43,12 +43,22 @@ def submit():
   # Records answer and whether or not answer was correct
 
   conn = sqlite3.connect("database.sqlite")
+  print(conn.execute("PRAGMA database_list;").fetchall())
   cursor = conn.cursor()
+
+  # create table using .sql file queries
+  with open("afaan-learning-system/data/schema.sql") as f:
+    cursor.executescript(f.read())
 
   cursor.execute("""
       INSERT INTO attempts (word_id, user_answer, correct)
       VALUES (?, ?, ?)
   """, (q["id"], user_answer, int(correct)))
+
+  # read attempts
+  cursor.execute("SELECT * FROM attempts")
+  for row in cursor.fetchall():
+    print(row)
 
   conn.commit()
   conn.close()
