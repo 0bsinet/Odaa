@@ -5,18 +5,23 @@ An AI integrated adaptive teaching app for users interested in learning Afaan Or
 
 ```text
 AfaanOromoApp/
-├──afaan-learning-system/
-│   ├── __init__.py
-│   ├── app.py
-│   ├── db.py
-│   ├── logic.py
+├── afaan_learning_system/
+│   ├── core
+│   │   ├── config.py
+│   │   ├── db.py
+│   │   └── logic.py
 │   ├── data
 │   │   ├── database.sqlite
 │   │   ├── schema.sql 
-│   │   ├── vocab.csv
-├──sqlite_node_dependencies
-│   │   ├── package-lock.json
-│   │   ├── package.json
-├── git.ignore
-└── README.md
+│   │   └── vocab.csv
+│   ├── __init__.py
+│   ├── app.py
+│   ├── home.py
+│   ├── login.py
+│   ├── quiz.py
+│   ├── result.py
+├── .gitignore
+├── LICENSE
+├── README.md
+└── requirements.txt
 ```
