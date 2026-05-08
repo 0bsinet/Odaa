@@ -14,4 +14,3 @@ DATA_DIR = BASE_DIR / "data"
 DB_PATH = DATA_DIR / "database.sqlite"
 VOCAB_PATH = DATA_DIR / "vocab.csv"
 SCHEMA_PATH = DATA_DIR / "schema.sql"
-
