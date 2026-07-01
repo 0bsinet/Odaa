@@ -19,7 +19,7 @@ AfaanOromoApp/
 │   ├── home.py
 │   ├── login.py
 │   ├── quiz.py
-│   ├── result.py
+│   └── result.py
 ├── .gitignore
 ├── LICENSE
 ├── README.md
