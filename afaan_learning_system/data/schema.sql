@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS attempts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  quiz_id TEXT,
   word_id INTEGER,
   user_answer TEXT,
   correct INTEGER,

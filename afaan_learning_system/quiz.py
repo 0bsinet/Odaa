@@ -1,4 +1,6 @@
 import streamlit as st
+import uuid
+
 from core.db import init_db, get_connection
 from core.logic import load_vocab, get_random_question, check_answer
 from core.config import TOTAL_QUESTIONS
@@ -12,10 +14,11 @@ def show_quiz():
   st.title("Proficiency Test")
 
   df = load_vocab()
-
   # -----------------------
   # Session state setup
   # -----------------------
+  if "quiz_id" not in st.session_state:
+    st.session_state.quiz_id = str(uuid.uuid4())
   if "current_question" not in st.session_state:
     st.session_state.current_question = get_random_question(df)
 
@@ -56,9 +59,14 @@ def show_quiz():
     cursor = conn.cursor()
   
     cursor.execute("""
-        INSERT INTO attempts (word_id, user_answer, correct)
-        VALUES (?, ?, ?)
-    """, (q["id"], user_answer, int(correct)))
+        INSERT INTO attempts (quiz_id, word_id, user_answer, correct)
+        VALUES (?, ?, ?, ?)
+    """, (
+      st.session_state.quiz_id, 
+      q["id"], 
+      user_answer, 
+      int(correct),
+    ))
   
     conn.commit()
     conn.close()

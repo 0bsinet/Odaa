@@ -6,6 +6,7 @@ def get_connection():
   return sqlite3.connect(db_path)
 
 def init_db():
+  """Create the application tables and add quiz_id to existing attempts tables."""
   conn = get_connection()
   cursor = conn.cursor()
 
@@ -23,30 +24,26 @@ def init_db():
   )
   """)
 
+  cursor.execute("PRAGMA table_info(attempts)")
+  columns = {row[1] for row in cursor.fetchall()}
+
+  if 'quiz_id' not in columns:
+    cursor.execute("ALTER TABLE attempts ADD COLUMN quiz_id TEXT")
+
   conn.commit()
   conn.close()
 
 
-"""
-Firstly retrieves the last N attempts of the user
-where N will be equal to TOTAL_QUESTIONS
-
-Then it adds up all the 1's from the correct answers,
-returning the total number of correct attempts
-"""
-def get_correct_count(limit: int = 10):
+def get_correct_count(quiz_id: str) -> int:
+  """Return the number of correct answers recorded for one quiz."""
   conn = get_connection()
   cursor = conn.cursor()
 
   cursor.execute("""
-  SELECT sum(CORRECT)
-  FROM (
-      SELECT correct
-      FROM attempts
-      ORDER BY id DESC
-      LIMIT ?
-  )
-  """, (limit,))
+  SELECT COALESCE(SUM(correct), 0)
+  FROM attempts
+  WHERE quiz_id = ?
+  """, (quiz_id,))
 
   result = cursor.fetchone()[0]
 

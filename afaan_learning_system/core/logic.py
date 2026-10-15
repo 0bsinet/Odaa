@@ -9,7 +9,7 @@ def load_vocab():
 def get_random_question(df: pd.DataFrame) -> pd.Series:
   return df.sample(1).iloc[0]
 
-# Compare user answers with truie answers
+# Compare user answers with true answers
 def check_answer(correct_answer: str, user_answer: str) -> bool: 
   correct_answer = "".join(correct_answer.split()).lower()
   user_answer = "".join(user_answer.split()).lower()
